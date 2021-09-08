@@ -1,0 +1,11 @@
+[tasks.build]
+command = "trunk"
+args = ["build", "--release"]
+
+[tasks.serve]
+command = "trunk"
+args = ["serve"]
+
+[tasks.watch]
+command = "trunk"
+args = ["watch"]

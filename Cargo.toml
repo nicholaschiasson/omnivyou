@@ -1,0 +1,59 @@
+[package]
+name = "omnivyew"
+version = "0.1.0"
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0"
+log = "0.4"
+serde = "1.0"
+wasm-bindgen = { git = "https://github.com/nicholaschiasson/wasm-bindgen" }
+wasm-bindgen-futures = { git = "https://github.com/nicholaschiasson/wasm-bindgen" }
+wasm-logger = "0.2"
+yew = "0.18"
+yew-router = "0.15"
+yewtil = { version = "0.4", features = [ "future" ]}
+
+[dev-dependencies]
+wasm-bindgen-test = "0.3"
+
+[dev-dependencies.web-sys]
+git = "https://github.com/nicholaschiasson/wasm-bindgen"
+features = [
+  "Document",
+  "Element",
+  "FileSystemHandle",
+  "FileSystemDirectoryHandle",
+  "HtmlCollection",
+]
+
+[patch.crates-io]
+js-sys = { git = "https://github.com/nicholaschiasson/wasm-bindgen" }
+wasm-bindgen = { git = "https://github.com/nicholaschiasson/wasm-bindgen" }
+
+[patch.crates-io.web-sys]
+git = "https://github.com/nicholaschiasson/wasm-bindgen"
+features = [
+	"DirectoryPickerOptions",
+	"FilePickerAcceptType",
+	"FilePickerOptions",
+	"FileSystemCreateWritableOptions",
+	"FileSystemDirectoryHandle",
+	"FileSystemFileHandle",
+	"FileSystemGetDirectoryOptions",
+	"FileSystemGetFileOptions",
+	"FileSystemHandle",
+	"FileSystemHandleKind",
+	"FileSystemHandlePermissionDescriptor",
+	"FileSystemPermissionDescriptor",
+	"FileSystemPermissionMode",
+	"FileSystemRemoveOptions",
+	"FileSystemWritableFileStream",
+	"OpenFilePickerOptions",
+	"SaveFilePickerOptions",
+	"WellKnownDirectory",
+	"WriteCommandType",
+	"WriteParams",
+]
