@@ -59,30 +59,19 @@ impl Component for Home {
 				let src_url = Url::create_object_url_with_blob(&file.slice().ok().unwrap()).ok();
 				let nav_buttons_class = "text-white bg-gray-700 text-opacity-0 bg-opacity-0 hover:text-opacity-100 hover:bg-opacity-70 transition duration-500 absolute inset-y-0 w-1/12 text-9xl flex place-content-center place-items-center cursor-pointer select-none";
 				html! {
-					// TODO: Figure out how to get content to stretch to fill if too small.
-					<div class="bg-black">
+					<div class="bg-black absolute inset-0 flex place-content-center place-items-center">
 						{
 							if file.type_().starts_with("audio/") {
 								html! {
-									<audio
-										autoplay=""
-										class="max-h-screen max-w-screen mx-auto object-center"
-										controls=true
-										src={ src_url }
-									/>
+									<audio 	autoplay="" class="max-h-screen max-w-screen" controls=true src={ src_url } />
 								}
 							} else if file.type_().starts_with("image/") {
 								html! {
-									<img class="max-h-screen max-w-screen mx-auto object-center" src={ src_url } />
+									<img class="max-h-screen max-w-screen" src={ src_url } />
 								}
 							} else if file.type_().starts_with("video/") {
 								html! {
-									<video
-										autoplay=""
-										class="max-h-screen max-w-screen mx-auto object-center"
-										controls=true
-										src={ src_url }
-									/>
+									<video autoplay="" class="max-h-screen max-w-screen" controls=true src={ src_url } />
 								}
 							} else {
 								self.link.send_message(HomeMsg::NextFile);
@@ -100,7 +89,8 @@ impl Component for Home {
 			},
 			None => html! {
 				<div>
-					<input type="file" webkitdirectory="" onchange=self.link.callback(move |value| {
+					<label for="directory" class="cursor-pointer border">{ "Choose a directory..." }</label>
+					<input id="directory" type="file" webkitdirectory="" class="hidden" onchange=self.link.callback(move |value| {
 						let mut result = Vec::new();
 						if let ChangeData::Files(files) = value {
 								let files = js_sys::try_iter(&files)
