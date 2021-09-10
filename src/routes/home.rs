@@ -1,7 +1,8 @@
-use log::debug;
-use yew::{ChangeData, Component, ComponentLink, Html, ShouldRender, html, web_sys::{File, Url}};
+use yew::{html, web_sys::File, ChangeData, Component, ComponentLink, Html, ShouldRender};
 
-pub enum HomeMsg {
+use crate::components::media::Media;
+
+pub enum Msg {
 	IndexDirectory(Vec<File>),
 	NextFile,
 	PreviousFile,
@@ -14,14 +15,14 @@ pub struct Home {
 }
 
 impl Component for Home {
-	type Message = HomeMsg;
+	type Message = Msg;
 	type Properties = ();
 
 	fn create(_: Self::Properties, link: ComponentLink<Self>) -> Self {
 		Home {
 			files: None,
 			index: 0,
-			link
+			link,
 		}
 	}
 
@@ -31,18 +32,21 @@ impl Component for Home {
 
 	fn update(&mut self, msg: Self::Message) -> ShouldRender {
 		match msg {
-			HomeMsg::IndexDirectory(files) => {
-				self.files = Some(files);
-				true
+			Msg::IndexDirectory(files) => {
+				if files.len() > 0 {
+					self.files = Some(files);
+					return true;
+				}
+				false
 			}
-			HomeMsg::NextFile => {
+			Msg::NextFile => {
 				if let Some(files) = &self.files {
 					self.index = (self.index + 1).rem_euclid(files.len() as isize);
 					return true;
 				}
 				false
 			}
-			HomeMsg::PreviousFile => {
+			Msg::PreviousFile => {
 				if let Some(files) = &self.files {
 					self.index = (self.index - 1).rem_euclid(files.len() as isize);
 					return true;
@@ -56,39 +60,21 @@ impl Component for Home {
 		match &self.files {
 			Some(files) => {
 				let file = &files[(self.index as usize).rem_euclid(files.len())];
-				let src_url = Url::create_object_url_with_blob(&file.slice().ok().unwrap()).ok();
 				let nav_buttons_class = "text-white bg-gray-700 text-opacity-0 bg-opacity-0 hover:text-opacity-100 hover:bg-opacity-70 transition duration-500 absolute inset-y-0 w-1/12 text-9xl flex place-content-center place-items-center cursor-pointer select-none";
 				html! {
 					<div class="bg-black absolute inset-0 flex place-content-center place-items-center">
-						{
-							if file.type_().starts_with("audio/") {
-								html! {
-									<audio 	autoplay="" class="max-h-screen max-w-screen" controls=true src={ src_url } />
-								}
-							} else if file.type_().starts_with("image/") {
-								html! {
-									<img class="max-h-screen max-w-screen" src={ src_url } />
-								}
-							} else if file.type_().starts_with("video/") {
-								html! {
-									<video autoplay="" class="max-h-screen max-w-screen" controls=true src={ src_url } />
-								}
-							} else {
-								self.link.send_message(HomeMsg::NextFile);
-								html!()
-							}
-						}
-						<div class=format!("{} {}", nav_buttons_class, "left-0") onclick=self.link.callback(|_| HomeMsg::PreviousFile)>
+						<Media class="max-h-screen max-w-screen" file=file.clone() />
+						<div class=format!("{} {}", nav_buttons_class, "left-0") onclick=self.link.callback(|_| Msg::PreviousFile)>
 							<p>{ "←" }</p>
 						</div>
-						<div class=format!("{} {}", nav_buttons_class, "right-0") onclick=self.link.callback(|_| HomeMsg::NextFile)>
+						<div class=format!("{} {}", nav_buttons_class, "right-0") onclick=self.link.callback(|_| Msg::NextFile)>
 							<p>{ "→" }</p>
 						</div>
 					</div>
 				}
-			},
+			}
 			None => html! {
-				<div>
+				<div class="absolute inset-0 bg-purple-900">
 					<label for="directory" class="cursor-pointer border">{ "Choose a directory..." }</label>
 					<input id="directory" type="file" webkitdirectory="" class="hidden" onchange=self.link.callback(move |value| {
 						let mut result = Vec::new();
@@ -101,7 +87,7 @@ impl Component for Home {
 										.filter(|f| f.type_().starts_with("audio/") || f.type_().starts_with("image/") || f.type_().starts_with("video/"));
 								result.extend(files);
 						}
-						HomeMsg::IndexDirectory(result)
+						Msg::IndexDirectory(result)
 					}) />
 				</div>
 			},

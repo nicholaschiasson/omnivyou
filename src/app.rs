@@ -1,10 +1,8 @@
-use yew::prelude::*;
-use yew_router::switch::Permissive;
-use yew_router::{prelude::*, route::Route};
+use yew::{html, Component, ComponentLink, Html, ShouldRender};
+use yew_router::{route::Route, router::Router, switch::Permissive};
 
-use crate::routes::{home::Home, media::Media, AppRoute};
+use crate::routes::{home::Home, AppRoute};
 
-/// Root component
 pub struct App;
 
 impl Component for App {
@@ -20,20 +18,18 @@ impl Component for App {
 	}
 
 	fn update(&mut self, _: Self::Message) -> ShouldRender {
-		true
+		false
 	}
 
 	fn view(&self) -> Html {
 		html! {
 			<>
-				// <Nav />
 				<Router<AppRoute, ()>
-					render = Router::render(|switch: AppRoute | {
+					render = Router::render(|switch: AppRoute| {
 						match switch {
 							AppRoute::Home => html!{ <Home/> },
-							AppRoute::Media(path) => html!{ <Media/> },
-							AppRoute::PageNotFound(Permissive(None)) => html!{"Page not found"},
-							AppRoute::PageNotFound(Permissive(Some(missed_route))) => html!{format!("Page '{}' not found", missed_route)}
+							AppRoute::PageNotFound(Permissive(None)) => html!{"Page not found!"},
+							AppRoute::PageNotFound(Permissive(Some(missed_route))) => html!{format!("Page '{}' not found!", missed_route)},
 						}
 					} )
 					redirect = Router::redirect(|route: Route<()>| {
