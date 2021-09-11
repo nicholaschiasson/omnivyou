@@ -4,9 +4,9 @@
 
 ### V1
 
-- [ ] Keyboard controls
-	- [ ] Arrows to navigate next and previous
-	- [ ] Escape to do the same as X button
+- [x] Keyboard controls
+	- [x] Arrows to navigate next and previous
+	- [x] Escape to do the same as X button
 - [ ] Style the initial file picker page
 - [ ] Style the file picker button
 - [ ] Add an X button to quit viewing and return to initial file picker page

@@ -60,7 +60,7 @@ impl Component for Media {
 	type Properties = Props;
 
 	fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self {
-		Media {
+		Self {
 			class: props.class,
 			media_type: Type::from(props.file.type_()),
 			src: Url::create_object_url_with_blob(&props.file.slice().ok().unwrap()).unwrap(),

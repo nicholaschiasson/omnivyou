@@ -10,7 +10,7 @@ impl Component for App {
 	type Properties = ();
 
 	fn create(_: Self::Properties, _: ComponentLink<Self>) -> Self {
-		App {}
+		Self {}
 	}
 
 	fn change(&mut self, _: Self::Properties) -> ShouldRender {
