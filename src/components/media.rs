@@ -88,7 +88,7 @@ impl Component for Media {
 			Type::Video(_) => {
 				html!(<video autoplay="" class=&self.class controls=true src=self.src.clone() />)
 			}
-			Type::Invalid(t) => html!(format!("Invalid media type '{}", t)),
+			Type::Invalid(t) => html!(format!("Invalid media type '{}'", t)),
 		}
 	}
 

@@ -1,6 +1,6 @@
 use yew::{html, web_sys::File, ChangeData, Component, ComponentLink, Html, ShouldRender};
 
-use crate::components::media::Media;
+use crate::components::media::{Media, Type};
 
 pub enum Msg {
 	IndexDirectory(Vec<File>),
@@ -84,7 +84,7 @@ impl Component for Home {
 										.unwrap()
 										.map(|v| File::from(v.unwrap()))
 										.filter(|f| !f.name().starts_with('.'))
-										.filter(|f| f.type_().starts_with("audio/") || f.type_().starts_with("image/") || f.type_().starts_with("video/"));
+										.filter(|f| !matches!(Type::from(f.type_()), Type::Invalid(_)));
 								result.extend(files);
 						}
 						Msg::IndexDirectory(result)
