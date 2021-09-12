@@ -18,7 +18,7 @@
 		- [ ] Images
 		- [ ] Videos
 		- [ ] Audio
-- [ ] Use official wasm-bindgen, web-sys, and js-sys
+- [x] Use official wasm-bindgen, web-sys, and js-sys
 - [ ] GitHub action to build pages folder
 - [ ] Buy omnivyew.com
 - [ ] Use custom domain in GitHub pages

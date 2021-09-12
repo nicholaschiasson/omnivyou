@@ -8,11 +8,17 @@ edition = "2018"
 [dependencies]
 anyhow = "1.0"
 gloo-events = "0.1"
-js-sys = { git = "https://github.com/nicholaschiasson/wasm-bindgen" }
+js-sys = "0.3"
+# # Forked version to support non-standard FileSystemAccess API.
+# js-sys = { git = "https://github.com/nicholaschiasson/wasm-bindgen" }
 log = "0.4"
 serde = "1.0"
-wasm-bindgen = { git = "https://github.com/nicholaschiasson/wasm-bindgen" }
-wasm-bindgen-futures = { git = "https://github.com/nicholaschiasson/wasm-bindgen" }
+wasm-bindgen = "0.2"
+# # Forked version to support non-standard FileSystemAccess API.
+# wasm-bindgen = { git = "https://github.com/nicholaschiasson/wasm-bindgen" }
+wasm-bindgen-futures = "0.4"
+# # Forked version to support non-standard FileSystemAccess API.
+# wasm-bindgen-futures = { git = "https://github.com/nicholaschiasson/wasm-bindgen" }
 wasm-logger = "0.2"
 yew = "0.18"
 yew-router = "0.15"
@@ -22,40 +28,44 @@ yewtil = { version = "0.4", features = [ "future" ]}
 wasm-bindgen-test = "0.3"
 
 [dev-dependencies.web-sys]
-git = "https://github.com/nicholaschiasson/wasm-bindgen"
+version = "0.3"
+# # Forked version to support non-standard FileSystemAccess API.
+# git = "https://github.com/nicholaschiasson/wasm-bindgen"
 features = [
-  "Document",
-  "Element",
-  "FileSystemHandle",
-  "FileSystemDirectoryHandle",
-  "HtmlCollection",
+	"Document",
+	"Element",
+	# "FileSystemHandle",
+	# "FileSystemDirectoryHandle",
+	"HtmlCollection",
 ]
 
-[patch.crates-io]
-js-sys = { git = "https://github.com/nicholaschiasson/wasm-bindgen" }
-wasm-bindgen = { git = "https://github.com/nicholaschiasson/wasm-bindgen" }
+# # Forked version to support non-standard FileSystemAccess API.
+# [patch.crates-io]
+# js-sys = { git = "https://github.com/nicholaschiasson/wasm-bindgen" }
+# wasm-bindgen = { git = "https://github.com/nicholaschiasson/wasm-bindgen" }
 
-[patch.crates-io.web-sys]
-git = "https://github.com/nicholaschiasson/wasm-bindgen"
-features = [
-	"DirectoryPickerOptions",
-	"FilePickerAcceptType",
-	"FilePickerOptions",
-	"FileSystemCreateWritableOptions",
-	"FileSystemDirectoryHandle",
-	"FileSystemFileHandle",
-	"FileSystemGetDirectoryOptions",
-	"FileSystemGetFileOptions",
-	"FileSystemHandle",
-	"FileSystemHandleKind",
-	"FileSystemHandlePermissionDescriptor",
-	"FileSystemPermissionDescriptor",
-	"FileSystemPermissionMode",
-	"FileSystemRemoveOptions",
-	"FileSystemWritableFileStream",
-	"OpenFilePickerOptions",
-	"SaveFilePickerOptions",
-	"WellKnownDirectory",
-	"WriteCommandType",
-	"WriteParams",
-]
+# # Forked version to support non-standard FileSystemAccess API.
+# [patch.crates-io.web-sys]
+# git = "https://github.com/nicholaschiasson/wasm-bindgen"
+# features = [
+# 	"DirectoryPickerOptions",
+# 	"FilePickerAcceptType",
+# 	"FilePickerOptions",
+# 	"FileSystemCreateWritableOptions",
+# 	"FileSystemDirectoryHandle",
+# 	"FileSystemFileHandle",
+# 	"FileSystemGetDirectoryOptions",
+# 	"FileSystemGetFileOptions",
+# 	"FileSystemHandle",
+# 	"FileSystemHandleKind",
+# 	"FileSystemHandlePermissionDescriptor",
+# 	"FileSystemPermissionDescriptor",
+# 	"FileSystemPermissionMode",
+# 	"FileSystemRemoveOptions",
+# 	"FileSystemWritableFileStream",
+# 	"OpenFilePickerOptions",
+# 	"SaveFilePickerOptions",
+# 	"WellKnownDirectory",
+# 	"WriteCommandType",
+# 	"WriteParams",
+# ]
