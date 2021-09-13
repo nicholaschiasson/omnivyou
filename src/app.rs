@@ -3,6 +3,16 @@ use yew_router::{route::Route, router::Router, switch::Permissive};
 
 use crate::routes::{home::Home, AppRoute};
 
+pub struct Settings {
+	autoplay: bool,
+	autoplay_delay_audio: u32,
+	autoplay_delay_image: u32,
+	autoplay_delay_video: u32,
+	toggle_audio: bool,
+	toggle_image: bool,
+	toggle_video: bool,
+}
+
 pub struct App;
 
 impl Component for App {

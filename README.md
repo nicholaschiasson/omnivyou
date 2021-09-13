@@ -7,9 +7,8 @@
 - [x] Keyboard controls
 	- [x] Arrows to navigate next and previous
 	- [x] Escape to do the same as X button
-- [ ] Style the initial file picker page
-- [ ] Style the file picker button
-- [ ] Add an X button to quit viewing and return to initial file picker page
+- [x] Use official wasm-bindgen, web-sys, and js-sys
+- [x] Add an X button to quit viewing and return to initial file picker page
 - [ ] Add settings button in viewing mode to toggle settings panel
 	- [ ] File picker button
 	- [ ] Autoplay check box
@@ -18,9 +17,10 @@
 		- [ ] Images
 		- [ ] Videos
 		- [ ] Audio
-- [x] Use official wasm-bindgen, web-sys, and js-sys
+- [ ] Style the initial file picker page
+- [ ] Style the file picker button
 - [ ] GitHub action to build pages folder
-- [ ] Buy omnivyew.com
+- [ ] Buy omnivyou.com
 - [ ] Use custom domain in GitHub pages
 - [ ] GitHub action for letsencrypt
 

@@ -5,6 +5,7 @@ use yew::{
 	web_sys::{window, File, KeyboardEvent},
 	ChangeData, Component, ComponentLink, Html, ShouldRender,
 };
+use yew_octicons::{Icon, IconKind};
 
 use crate::components::media::{Media, Type};
 
@@ -91,23 +92,35 @@ impl Component for Home {
 		match &self.files {
 			Some(files) => {
 				let file = &files[(self.index as usize).rem_euclid(files.len())];
-				let nav_buttons_class = "text-white bg-gray-700 text-opacity-0 bg-opacity-0 hover:text-opacity-100 hover:bg-opacity-70 transition duration-500 absolute inset-y-0 w-1/12 text-9xl flex place-content-center place-items-center cursor-pointer select-none";
+				let nav_buttons_class = "text-white bg-gray-700 text-opacity-0 bg-opacity-0 hover:text-opacity-100 hover:bg-opacity-70 transition duration-500 absolute inset-y-0 w-1/6 lg:w-1/12 text-9xl flex place-content-center place-items-center cursor-pointer select-none";
+				let circle_buttons_class = "text-center text-white bg-gray-500 text-opacity-25 bg-opacity-25 hover:text-opacity-80 hover:bg-opacity-90 transition duration-500 absolute top-0 rounded-full text-4xl mx-6 my-4 p-2 h-32 w-32 lg:h-16 lg:w-16 flex place-content-center place-items-center cursor-pointer select-none";
 				html! {
 					<div class="bg-black text-white absolute inset-0 flex place-content-center place-items-center">
-						<Media class="max-h-screen max-w-screen" file=file.clone() />
 						<div class=format!("{} {}", nav_buttons_class, "left-0") onclick=self.link.callback(|_| Msg::PreviousFile)>
-							<p>{ "←" }</p>
+							{ Icon::new_sized(IconKind::ArrowLeft, 128) }
 						</div>
+						<Media class="max-h-screen max-w-screen" file=file.clone() />
 						<div class=format!("{} {}", nav_buttons_class, "right-0") onclick=self.link.callback(|_| Msg::NextFile)>
-							<p>{ "→" }</p>
+							{ Icon::new_sized(IconKind::ArrowRight, 128) }
+						</div>
+						<div class=format!("{} {}", circle_buttons_class, "right-0") onclick=self.link.callback(|_| Msg::Quit)>
+							{ Icon::new_sized(IconKind::X, 64) }
+						</div>
+						<div class=format!("{} {}", circle_buttons_class, "left-0")>
+							{ Icon::new_sized(IconKind::Gear, 64) }
 						</div>
 					</div>
 				}
 			}
 			None => html! {
 				<div class="bg-gray-700 text-white absolute inset-0 flex flex-col place-content-center place-items-center">
-					<h1 class="animate-bounce text-5xl m-2">{ "OmnivYou" }</h1>
-					<label for="directory" class="cursor-pointer border rounded text-2xl p-1 bg-white bg-opacity-0 hover:bg-opacity-100 hover:text-black transition duration-500">{ "Choose a directory..." }</label>
+					<h1 class="animate-bounce text-9xl m-2">{ "OmnivYou" }</h1>
+					<label for="directory" class="cursor-pointer border-2 rounded text-7xl px-2 py-1 bg-white bg-opacity-0 hover:bg-opacity-100 hover:text-black transition duration-500 flex place-content-center place-items-center">
+						<span class="pr-1 text-yellow-300">
+							{ Icon::new_sized(IconKind::FileDirectoryFill, 64) }
+						</span>
+						{ "Select a folder" }
+					</label>
 					<input id="directory" type="file" webkitdirectory="" class="hidden" onchange=self.link.callback(move |value| {
 						let mut result = Vec::new();
 						if let ChangeData::Files(files) = value {
@@ -121,6 +134,17 @@ impl Component for Home {
 						}
 						Msg::IndexDirectory(result)
 					}) />
+					<div class="p-2 flex place-content-center place-items-center">
+						<div class="w-16 h-16 lg:w-12 lg:h-12 p-2 m-2 border-2 rounded-full flex place-content-center place-items-center cursor-pointer">
+							{ Icon::new_sized(IconKind::DeviceCameraVideo, 32) }
+						</div>
+						<div class="w-16 h-16 lg:w-12 lg:h-12 p-2 m-2 border-2 rounded-full flex place-content-center place-items-center cursor-pointer">
+							{ Icon::new_sized(IconKind::Unmute, 32) }
+						</div>
+						<div class="w-16 h-16 lg:w-12 lg:h-12 p-2 m-2 border-2 rounded-full flex place-content-center place-items-center cursor-pointer">
+							{ Icon::new_sized(IconKind::DeviceCamera, 32) }
+						</div>
+					</div>
 				</div>
 			},
 		}

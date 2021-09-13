@@ -1,5 +1,5 @@
 [package]
-name = "omnivyew"
+name = "omnivyou"
 version = "0.1.0"
 edition = "2018"
 
@@ -21,6 +21,7 @@ wasm-bindgen-futures = "0.4"
 # wasm-bindgen-futures = { git = "https://github.com/nicholaschiasson/wasm-bindgen" }
 wasm-logger = "0.2"
 yew = "0.18"
+yew-octicons = "0.2"
 yew-router = "0.15"
 yewtil = { version = "0.4", features = [ "future" ]}
 
