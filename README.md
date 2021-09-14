@@ -13,10 +13,10 @@
 	- [ ] File picker button
 	- [ ] Autoplay check box
 	- [ ] Photo delay setting
-	- [ ] Content type check boxes
-		- [ ] Images
-		- [ ] Videos
-		- [ ] Audio
+	- [x] Content type check boxes
+		- [x] Images
+		- [x] Videos
+		- [x] Audio
 - [ ] Style the initial file picker page
 - [ ] Style the file picker button
 - [ ] GitHub action to build pages folder
