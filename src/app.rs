@@ -3,6 +3,37 @@ use yew_router::{route::Route, router::Router, switch::Permissive};
 
 use crate::routes::{home::Home, AppRoute};
 
+pub const MAX_DELAY_SECONDS: u32 = 3600;
+
+#[derive(Clone, Copy, Eq, PartialEq)]
+pub struct Settings {
+	pub config_audio_autoplay_delay: u32,
+	pub config_image_autoplay_delay: u32,
+	pub config_video_autoplay_delay: u32,
+	pub toggle_audio: bool,
+	pub toggle_audio_autoplay: bool,
+	pub toggle_image: bool,
+	pub toggle_image_autoplay: bool,
+	pub toggle_video: bool,
+	pub toggle_video_autoplay: bool,
+}
+
+impl Settings {
+	pub fn new() -> Self {
+		Self {
+			config_audio_autoplay_delay: 0,
+			config_image_autoplay_delay: 5,
+			config_video_autoplay_delay: 0,
+			toggle_audio: true,
+			toggle_audio_autoplay: true,
+			toggle_image: true,
+			toggle_image_autoplay: true,
+			toggle_video: true,
+			toggle_video_autoplay: true,
+		}
+	}
+}
+
 pub struct App;
 
 impl Component for App {

@@ -1,11 +1,23 @@
 [tasks.build]
+dependencies = ["build_tailwind"]
 command = "trunk"
 args = ["build", "--release"]
 
+[tasks.build_styles]
+command = "mkdir"
+args = ["-p", "pre/rsrc/styles"]
+
+[tasks.build_tailwind]
+dependencies = ["build_styles"]
+command = "sh"
+args = ["-c", "npx tailwindcss -i rsrc/styles/tailwind.css -o pre/rsrc/styles/tailwind.css"]
+
 [tasks.serve]
+dependencies = ["build"]
 command = "trunk"
 args = ["serve"]
 
 [tasks.watch]
+dependencies = ["build"]
 command = "trunk"
 args = ["watch"]

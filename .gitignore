@@ -2,6 +2,7 @@
 # will have compiled files and executables
 debug/
 dist/
+pre/
 target/
 
 # Remove Cargo.lock from gitignore if creating an executable, leave it for libraries

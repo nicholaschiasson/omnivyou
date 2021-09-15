@@ -11,12 +11,17 @@
 - [x] Add an X button to quit viewing and return to initial file picker page
 - [ ] Add settings button in viewing mode to toggle settings panel
 	- [ ] File picker button
-	- [ ] Autoplay check box
-	- [ ] Photo delay setting
-	- [x] Content type check boxes
-		- [x] Images
-		- [x] Videos
+	- [x] Content specific settings
 		- [x] Audio
+		- [x] Audio autoplay
+		- [x] Audio autoplay delay
+		- [x] Images
+		- [x] Image autoplay
+		- [x] Image autoplay delay
+		- [x] Videos
+		- [x] Video autoplay
+		- [x] Video autoplay delay
+- [ ] Add visual warning when no files could be found
 - [ ] Style the initial file picker page
 - [ ] Style the file picker button
 - [ ] GitHub action to build pages folder
@@ -26,8 +31,12 @@
 
 ### V2
 
-- [ ] Build tailwind with build step
+- [x] Build tailwind with build step
 - [ ] Add swipe capability for mobile
+- [ ] Hack FileSystemAccess binding to get directory entries
+- [ ] Use `showDirectoryPicker` instead of file input element
+- [ ] Add directory indexing
+- [ ] Add options for directory items
 
 ## Notes
 

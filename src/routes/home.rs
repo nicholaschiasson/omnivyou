@@ -8,45 +8,28 @@ use yew::{
 };
 use yew_octicons::{Icon, IconKind};
 
-use crate::components::media::{Media, Type};
-
-#[derive(Clone, Copy, Eq, PartialEq)]
-pub struct Settings {
-	pub config_autoplay_delay_audio: u32,
-	pub config_autoplay_delay_image: u32,
-	pub config_autoplay_delay_video: u32,
-	pub toggle_audio: bool,
-	pub toggle_autoplay: bool,
-	pub toggle_image: bool,
-	pub toggle_video: bool,
-}
-
-impl Settings {
-	fn new() -> Self {
-		Self {
-			config_autoplay_delay_audio: 0,
-			config_autoplay_delay_image: 5000,
-			config_autoplay_delay_video: 0,
-			toggle_audio: true,
-			toggle_autoplay: true,
-			toggle_image: true,
-			toggle_video: true,
-		}
-	}
-}
+use crate::{
+	app::Settings,
+	components::{
+		media::{Media, Type},
+		menu::Menu,
+	},
+};
 
 pub enum Msg {
 	IndexDirectory(Vec<File>),
 	NextFile,
 	PreviousFile,
 	Quit,
-	ConfigAutoplayDelayAudio(u32),
-	ConfigAutoplayDelayImage(u32),
-	ConfigAutoplayDelayVideo(u32),
+	ConfigAudioAutoplayDelay(u32),
+	ConfigImageAutoplayDelay(u32),
+	ConfigVideoAutoplayDelay(u32),
 	ToggleAudio,
-	ToggleAutoplay,
+	ToggleAudioAutoplay,
 	ToggleImage,
+	ToggleImageAutoplay,
 	ToggleVideo,
+	ToggleVideoAutoplay,
 	None,
 }
 
@@ -122,32 +105,40 @@ impl Component for Home {
 				self.keydown_listener = None;
 				true
 			}
-			Msg::ConfigAutoplayDelayAudio(delay) => {
-				self.settings.config_autoplay_delay_audio = delay;
+			Msg::ConfigAudioAutoplayDelay(delay) => {
+				self.settings.config_audio_autoplay_delay = delay;
 				true
 			}
-			Msg::ConfigAutoplayDelayImage(delay) => {
-				self.settings.config_autoplay_delay_image = delay;
+			Msg::ConfigImageAutoplayDelay(delay) => {
+				self.settings.config_image_autoplay_delay = delay;
 				true
 			}
-			Msg::ConfigAutoplayDelayVideo(delay) => {
-				self.settings.config_autoplay_delay_video = delay;
+			Msg::ConfigVideoAutoplayDelay(delay) => {
+				self.settings.config_video_autoplay_delay = delay;
 				true
 			}
 			Msg::ToggleAudio => {
 				self.settings.toggle_audio = !self.settings.toggle_audio;
 				true
 			}
-			Msg::ToggleAutoplay => {
-				self.settings.toggle_autoplay = !self.settings.toggle_autoplay;
+			Msg::ToggleAudioAutoplay => {
+				self.settings.toggle_audio_autoplay = !self.settings.toggle_audio_autoplay;
 				true
 			}
 			Msg::ToggleImage => {
 				self.settings.toggle_image = !self.settings.toggle_image;
 				true
 			}
+			Msg::ToggleImageAutoplay => {
+				self.settings.toggle_image_autoplay = !self.settings.toggle_image_autoplay;
+				true
+			}
 			Msg::ToggleVideo => {
 				self.settings.toggle_video = !self.settings.toggle_video;
+				true
+			}
+			Msg::ToggleVideoAutoplay => {
+				self.settings.toggle_video_autoplay = !self.settings.toggle_video_autoplay;
 				true
 			}
 			Msg::None => false,
@@ -155,11 +146,35 @@ impl Component for Home {
 	}
 
 	fn view(&self) -> Html {
+		let circle_buttons_class = "text-center text-white bg-gray-500 text-opacity-25 bg-opacity-25 hover:text-opacity-80 hover:bg-opacity-90 transition duration-500 absolute top-0 rounded-full text-4xl mx-6 my-4 p-2 h-32 w-32 lg:h-16 lg:w-16 flex place-content-center place-items-center cursor-pointer select-none rotate-0 hover:rotate-180";
+		let config_audio_autoplay_delay_callback = self.link.callback(|value| {
+			if let ChangeData::Value(delay) = value {
+				if let Ok(d) = delay.parse::<u32>() {
+					return Msg::ConfigAudioAutoplayDelay(d);
+				}
+			}
+			Msg::None
+		});
+		let config_image_autoplay_delay_callback = self.link.callback(|value| {
+			if let ChangeData::Value(delay) = value {
+				if let Ok(d) = delay.parse::<u32>() {
+					return Msg::ConfigImageAutoplayDelay(d);
+				}
+			}
+			Msg::None
+		});
+		let config_video_autoplay_delay_callback = self.link.callback(|value| {
+			if let ChangeData::Value(delay) = value {
+				if let Ok(d) = delay.parse::<u32>() {
+					return Msg::ConfigVideoAutoplayDelay(d);
+				}
+			}
+			Msg::None
+		});
 		match &self.files {
 			Some(files) => {
 				let file = &files[(self.index as usize).rem_euclid(files.len())];
 				let nav_buttons_class = "text-white bg-gray-700 text-opacity-0 bg-opacity-0 hover:text-opacity-100 hover:bg-opacity-70 transition duration-500 absolute inset-y-0 w-1/6 lg:w-1/12 text-9xl flex place-content-center place-items-center cursor-pointer select-none";
-				let circle_buttons_class = "text-center text-white bg-gray-500 text-opacity-25 bg-opacity-25 hover:text-opacity-80 hover:bg-opacity-90 transition duration-500 absolute top-0 rounded-full text-4xl mx-6 my-4 p-2 h-32 w-32 lg:h-16 lg:w-16 flex place-content-center place-items-center cursor-pointer select-none";
 				html! {
 					<div class="bg-black text-white absolute inset-0 flex place-content-center place-items-center">
 						<div class=format!("{} {}", nav_buttons_class, "left-0") onclick=self.link.callback(|_| Msg::PreviousFile)>
@@ -172,9 +187,19 @@ impl Component for Home {
 						<div class=format!("{} {}", circle_buttons_class, "right-0") onclick=self.link.callback(|_| Msg::Quit)>
 							{ Icon::new_sized(IconKind::X, 64) }
 						</div>
-						<div class=format!("{} {}", circle_buttons_class, "left-0")>
-							{ Icon::new_sized(IconKind::Gear, 64) }
-						</div>
+						<Menu
+							button_class=format!("{} {}", circle_buttons_class, "left-0")
+							settings=self.settings
+							toggle_audio_callback=self.link.callback(|_| Msg::ToggleAudio)
+							toggle_audio_autoplay_callback=self.link.callback(|_| Msg::ToggleAudioAutoplay)
+							toggle_image_callback=self.link.callback(|_| Msg::ToggleImage)
+							toggle_image_autoplay_callback=self.link.callback(|_| Msg::ToggleImageAutoplay)
+							toggle_video_callback=self.link.callback(|_| Msg::ToggleVideo)
+							toggle_video_autoplay_callback=self.link.callback(|_| Msg::ToggleVideoAutoplay)
+							config_audio_autoplay_delay_callback=config_audio_autoplay_delay_callback
+							config_image_autoplay_delay_callback=config_image_autoplay_delay_callback
+							config_video_autoplay_delay_callback=config_video_autoplay_delay_callback
+						/>
 					</div>
 				}
 			}
@@ -186,7 +211,7 @@ impl Component for Home {
 				html! {
 					<div class="bg-gray-700 text-white absolute inset-0 flex flex-col place-content-center place-items-center select-none">
 						<h1 class="animate-bounce text-9xl m-2">{ "OmnivYou" }</h1>
-						<label for="directory" class="cursor-pointer border-2 rounded text-7xl px-2 py-1 bg-white bg-opacity-0 hover:bg-opacity-100 hover:text-black transition duration-500 flex place-content-center place-items-center select-none">
+						<label for="directory" class="cursor-pointer border-2 rounded-lg text-7xl px-2 py-1 bg-white bg-opacity-0 hover:bg-opacity-100 hover:text-black transition duration-500 flex place-content-center place-items-center select-none">
 							<span class="pr-1 text-yellow-300">
 								{ Icon::new_sized(IconKind::FileDirectoryFill, 64) }
 							</span>
@@ -230,6 +255,19 @@ impl Component for Home {
 								{ Icon::new_sized(IconKind::Image, 32) }
 							</div>
 						</div>
+						<Menu
+							button_class=format!("{} {}", circle_buttons_class, "left-0")
+							settings=self.settings
+							toggle_audio_callback=self.link.callback(|_| Msg::ToggleAudio)
+							toggle_audio_autoplay_callback=self.link.callback(|_| Msg::ToggleAudioAutoplay)
+							toggle_image_callback=self.link.callback(|_| Msg::ToggleImage)
+							toggle_image_autoplay_callback=self.link.callback(|_| Msg::ToggleImageAutoplay)
+							toggle_video_callback=self.link.callback(|_| Msg::ToggleVideo)
+							toggle_video_autoplay_callback=self.link.callback(|_| Msg::ToggleVideoAutoplay)
+							config_audio_autoplay_delay_callback=config_audio_autoplay_delay_callback
+							config_image_autoplay_delay_callback=config_image_autoplay_delay_callback
+							config_video_autoplay_delay_callback=config_video_autoplay_delay_callback
+						/>
 					</div>
 				}
 			}
