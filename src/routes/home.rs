@@ -1,3 +1,5 @@
+use std::time::Duration;
+
 use gloo_events::EventListener;
 use log::warn;
 use wasm_bindgen::JsCast;
@@ -21,9 +23,9 @@ pub enum Msg {
 	NextFile,
 	PreviousFile,
 	Quit,
-	ConfigAudioAutoplayDelay(u32),
-	ConfigImageAutoplayDelay(u32),
-	ConfigVideoAutoplayDelay(u32),
+	ConfigAudioAutoplayDelay(u64),
+	ConfigImageAutoplayDelay(u64),
+	ConfigVideoAutoplayDelay(u64),
 	ToggleAudio,
 	ToggleAudioAutoplay,
 	ToggleImage,
@@ -106,15 +108,15 @@ impl Component for Home {
 				true
 			}
 			Msg::ConfigAudioAutoplayDelay(delay) => {
-				self.settings.config_audio_autoplay_delay = delay;
+				self.settings.config_audio_autoplay_delay = Duration::from_secs(delay);
 				true
 			}
 			Msg::ConfigImageAutoplayDelay(delay) => {
-				self.settings.config_image_autoplay_delay = delay;
+				self.settings.config_image_autoplay_delay = Duration::from_secs(delay);
 				true
 			}
 			Msg::ConfigVideoAutoplayDelay(delay) => {
-				self.settings.config_video_autoplay_delay = delay;
+				self.settings.config_video_autoplay_delay = Duration::from_secs(delay);
 				true
 			}
 			Msg::ToggleAudio => {
@@ -149,7 +151,7 @@ impl Component for Home {
 		let circle_buttons_class = "text-center text-white bg-gray-500 text-opacity-25 bg-opacity-25 hover:text-opacity-80 hover:bg-opacity-90 transition duration-500 absolute top-0 rounded-full text-4xl mx-6 my-4 p-2 h-32 w-32 lg:h-16 lg:w-16 flex place-content-center place-items-center cursor-pointer select-none rotate-0 hover:rotate-180";
 		let config_audio_autoplay_delay_callback = self.link.callback(|value| {
 			if let ChangeData::Value(delay) = value {
-				if let Ok(d) = delay.parse::<u32>() {
+				if let Ok(d) = delay.parse::<u64>() {
 					return Msg::ConfigAudioAutoplayDelay(d);
 				}
 			}
@@ -157,7 +159,7 @@ impl Component for Home {
 		});
 		let config_image_autoplay_delay_callback = self.link.callback(|value| {
 			if let ChangeData::Value(delay) = value {
-				if let Ok(d) = delay.parse::<u32>() {
+				if let Ok(d) = delay.parse::<u64>() {
 					return Msg::ConfigImageAutoplayDelay(d);
 				}
 			}
@@ -165,7 +167,7 @@ impl Component for Home {
 		});
 		let config_video_autoplay_delay_callback = self.link.callback(|value| {
 			if let ChangeData::Value(delay) = value {
-				if let Ok(d) = delay.parse::<u32>() {
+				if let Ok(d) = delay.parse::<u64>() {
 					return Msg::ConfigVideoAutoplayDelay(d);
 				}
 			}
@@ -180,7 +182,7 @@ impl Component for Home {
 						<div class=format!("{} {}", nav_buttons_class, "left-0") onclick=self.link.callback(|_| Msg::PreviousFile)>
 							{ Icon::new_sized(IconKind::ArrowLeft, 128) }
 						</div>
-						<Media class="max-h-screen max-w-screen" file=file.clone() />
+						<Media onended=self.link.callback(|_| Msg::NextFile) class="max-h-screen max-w-screen" file=file.clone() settings=self.settings />
 						<div class=format!("{} {}", nav_buttons_class, "right-0") onclick=self.link.callback(|_| Msg::NextFile)>
 							{ Icon::new_sized(IconKind::ArrowRight, 128) }
 						</div>

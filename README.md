@@ -10,17 +10,14 @@
 - [x] Use official wasm-bindgen, web-sys, and js-sys
 - [x] Add an X button to quit viewing and return to initial file picker page
 - [ ] Add settings button in viewing mode to toggle settings panel
-	- [ ] File picker button
 	- [x] Content specific settings
-		- [x] Audio
 		- [x] Audio autoplay
 		- [x] Audio autoplay delay
-		- [x] Images
 		- [x] Image autoplay
 		- [x] Image autoplay delay
-		- [x] Videos
 		- [x] Video autoplay
 		- [x] Video autoplay delay
+- [ ] Make it so clicking outside of menu closes the menu
 - [ ] Add visual warning when no files could be found
 - [ ] Style the initial file picker page
 - [ ] Style the file picker button
@@ -33,6 +30,8 @@
 
 - [x] Build tailwind with build step
 - [ ] Add swipe capability for mobile
+- [ ] Add transitions?
+	- [ ] Fade
 - [ ] Hack FileSystemAccess binding to get directory entries
 - [ ] Use `showDirectoryPicker` instead of file input element
 - [ ] Add directory indexing

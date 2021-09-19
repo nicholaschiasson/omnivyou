@@ -99,8 +99,6 @@ impl Component for Menu {
 					<form class=form_class>
 						<fieldset>
 							<legend>{ "Video" }</legend>
-							<label>{ "Include Video" }</label>
-							<input type="checkbox" checked=self.settings.toggle_video onchange=&self.toggle_video_callback />
 							<label>{ "Autoplay" }</label>
 							<input type="checkbox"
 								checked=self.settings.toggle_video_autoplay
@@ -111,16 +109,14 @@ impl Component for Menu {
 							<input type="number" class="bg-black"
 								disabled={ !self.settings.toggle_video || !self.settings.toggle_video_autoplay }
 								min=0
-								max=format!("{}", app::MAX_DELAY_SECONDS)
+								max=format!("{}", app::MAX_DELAY_SECONDS.as_secs())
 								pattern="^\\d{1,4}$"
-								value=format!("{}", self.settings.config_video_autoplay_delay)
+								value=format!("{}", self.settings.config_video_autoplay_delay.as_secs())
 								onchange=&self.config_video_autoplay_delay_callback
 							/>
 						</fieldset>
 						<fieldset>
 							<legend>{ "Audio" }</legend>
-							<label>{ "Include Audio" }</label>
-							<input type="checkbox" checked=self.settings.toggle_audio onchange=&self.toggle_audio_callback />
 							<label>{ "Autoplay" }</label>
 							<input type="checkbox"
 								checked=self.settings.toggle_audio_autoplay
@@ -131,16 +127,14 @@ impl Component for Menu {
 							<input type="number" class="bg-black"
 								disabled={ !self.settings.toggle_audio || !self.settings.toggle_audio_autoplay }
 								min=0
-								max=format!("{}", app::MAX_DELAY_SECONDS)
+								max=format!("{}", app::MAX_DELAY_SECONDS.as_secs())
 								pattern="^\\d{1,4}$"
-								value=format!("{}", self.settings.config_audio_autoplay_delay)
+								value=format!("{}", self.settings.config_audio_autoplay_delay.as_secs())
 								onchange=&self.config_audio_autoplay_delay_callback
 							/>
 						</fieldset>
 						<fieldset>
 							<legend>{ "Photos" }</legend>
-							<label>{ "Include Photos" }</label>
-							<input type="checkbox" checked=self.settings.toggle_image onchange=&self.toggle_image_callback />
 							<label>{ "Autoplay" }</label>
 							<input type="checkbox"
 								checked=self.settings.toggle_image_autoplay
@@ -151,9 +145,9 @@ impl Component for Menu {
 							<input type="number" class="bg-black"
 								disabled={ !self.settings.toggle_image || !self.settings.toggle_image_autoplay }
 								min=1
-								max=format!("{}", app::MAX_DELAY_SECONDS)
+								max=format!("{}", app::MAX_DELAY_SECONDS.as_secs())
 								pattern="^\\d{1,4}$"
-								value=format!("{}", self.settings.config_image_autoplay_delay)
+								value=format!("{}", self.settings.config_image_autoplay_delay.as_secs())
 								onchange=&self.config_image_autoplay_delay_callback
 							/>
 						</fieldset>
