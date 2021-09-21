@@ -18,7 +18,7 @@
 		- [x] Video autoplay
 		- [x] Video autoplay delay
 - [x] Make it so clicking outside of menu closes the menu
-- [ ] Add visual warning when no files could be found
+- [x] Add visual warning when no files could be found
 - [ ] GitHub action to build pages folder
 - [ ] Buy omnivyou.com
 - [ ] Use custom domain in GitHub pages
