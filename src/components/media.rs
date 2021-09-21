@@ -41,19 +41,20 @@ pub enum Msg {
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct Props {
-	pub onended: Callback<()>,
 	#[prop_or_default]
 	pub class: String,
 	pub file: File,
+	pub onended: Callback<()>,
 	pub settings: Settings,
 }
 
 pub struct Media {
-	on_ended: Callback<()>,
 	class: String,
+	ended: bool,
 	file: File,
 	link: ComponentLink<Self>,
 	media_type: Type,
+	on_ended: Callback<()>,
 	settings: Settings,
 	src: String,
 	timeout: Option<TimeoutTask>,
@@ -93,11 +94,12 @@ impl Component for Media {
 			_ => None,
 		};
 		Self {
-			on_ended: props.onended.clone(),
 			class: props.class,
+			ended: false,
 			file: props.file.clone(),
 			link,
 			media_type,
+			on_ended: props.onended.clone(),
 			settings: props.settings,
 			src: Url::create_object_url_with_blob(&props.file.slice().ok().unwrap()).unwrap(),
 			timeout,
@@ -116,6 +118,7 @@ impl Component for Media {
 		if new_media {
 			should_render = true;
 			self.revoke_src();
+			self.ended = false;
 			self.file = props.file.clone();
 			self.media_type = media_type.clone();
 			self.src = Url::create_object_url_with_blob(&props.file.slice().ok().unwrap()).unwrap();
@@ -141,7 +144,7 @@ impl Component for Media {
 					Type::Audio(_) => {
 						if new_audio_setting {
 							self.timeout =
-								if props.settings.toggle_audio_autoplay && matches!(self.timeout, Some(_)) {
+								if props.settings.toggle_audio_autoplay && self.ended {
 									Some(TimeoutService::spawn(
 										props.settings.config_audio_autoplay_delay,
 										self.on_ended.clone(),
@@ -154,7 +157,7 @@ impl Component for Media {
 					Type::Video(_) => {
 						if new_video_setting {
 							self.timeout =
-								if props.settings.toggle_video_autoplay && matches!(self.timeout, Some(_)) {
+								if props.settings.toggle_video_autoplay && self.ended {
 									Some(TimeoutService::spawn(
 										props.settings.config_video_autoplay_delay,
 										self.on_ended.clone(),
@@ -187,6 +190,7 @@ impl Component for Media {
 	fn update(&mut self, msg: Self::Message) -> ShouldRender {
 		match msg {
 			Msg::Ended => {
+				self.ended = true;
 				let (set_timeout, delay) = match self.media_type {
 					Type::Audio(_) => (
 						self.settings.toggle_audio_autoplay,
@@ -208,6 +212,7 @@ impl Component for Media {
 				false
 			}
 			Msg::Seeked => {
+				self.ended = false;
 				self.timeout = None;
 				false
 			}
