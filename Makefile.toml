@@ -1,21 +1,25 @@
 [tasks.build]
-dependencies = ["build_tailwind"]
+dependencies = ["build_styles"]
 command = "trunk"
 args = ["build", "--release"]
 
-[tasks.build_styles]
+[tasks.build_dirs]
 command = "mkdir"
 args = ["-p", "pre/rsrc/styles"]
 
+[tasks.build_styles]
+dependencies = ["build_tailwind"]
+
 [tasks.build_tailwind]
-dependencies = ["build_styles"]
+dependencies = ["build_dirs"]
 command = "sh"
 args = ["-c", "npx tailwindcss -i rsrc/styles/tailwind.css -o pre/rsrc/styles/tailwind.css"]
 
 [tasks.serve]
 dependencies = ["build"]
 command = "trunk"
-args = ["serve"]
+# args = ["serve", "--no-autoreload"]
+args = ["serve"] # TODO: After upgrading trunk-cli to 0.14, use the above args with --no-autoreload
 
 [tasks.watch]
 dependencies = ["build"]

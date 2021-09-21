@@ -9,7 +9,7 @@
 	- [x] Escape to do the same as X button
 - [x] Use official wasm-bindgen, web-sys, and js-sys
 - [x] Add an X button to quit viewing and return to initial file picker page
-- [ ] Add settings button in viewing mode to toggle settings panel
+- [x] Add settings button in viewing mode to toggle settings panel
 	- [x] Content specific settings
 		- [x] Audio autoplay
 		- [x] Audio autoplay delay
@@ -17,10 +17,8 @@
 		- [x] Image autoplay delay
 		- [x] Video autoplay
 		- [x] Video autoplay delay
-- [ ] Make it so clicking outside of menu closes the menu
+- [x] Make it so clicking outside of menu closes the menu
 - [ ] Add visual warning when no files could be found
-- [ ] Style the initial file picker page
-- [ ] Style the file picker button
 - [ ] GitHub action to build pages folder
 - [ ] Buy omnivyou.com
 - [ ] Use custom domain in GitHub pages
@@ -29,6 +27,8 @@
 ### V2
 
 - [x] Build tailwind with build step
+- [ ] Build tailwind with trunk hook
+- [ ] Style the initial file picker page further
 - [ ] Add swipe capability for mobile
 - [ ] Add transitions?
 	- [ ] Fade

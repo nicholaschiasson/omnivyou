@@ -6,7 +6,7 @@ use wasm_bindgen::JsCast;
 use yew::{
 	html,
 	web_sys::{window, File, HtmlInputElement, KeyboardEvent},
-	ChangeData, Component, ComponentLink, Html, NodeRef, ShouldRender,
+	Callback, ChangeData, Component, ComponentLink, Html, NodeRef, ShouldRender,
 };
 use yew_octicons::{Icon, IconKind};
 
@@ -41,6 +41,7 @@ pub struct Home {
 	keydown_listener: Option<EventListener>,
 	link: ComponentLink<Self>,
 	node_ref: NodeRef,
+	on_ended_cb: Callback<()>,
 	settings: Settings,
 }
 
@@ -49,12 +50,14 @@ impl Component for Home {
 	type Properties = ();
 
 	fn create(_: Self::Properties, link: ComponentLink<Self>) -> Self {
+		let on_ended_cb = link.callback(|_| Msg::NextFile);
 		Self {
 			files: None,
 			index: 0,
 			keydown_listener: None,
 			link,
 			node_ref: NodeRef::default(),
+			on_ended_cb,
 			settings: Settings::new(),
 		}
 	}
@@ -182,7 +185,7 @@ impl Component for Home {
 						<div class=format!("{} {}", nav_buttons_class, "left-0") onclick=self.link.callback(|_| Msg::PreviousFile)>
 							{ Icon::new_sized(IconKind::ArrowLeft, 128) }
 						</div>
-						<Media onended=self.link.callback(|_| Msg::NextFile) class="max-h-screen max-w-screen" file=file.clone() settings=self.settings />
+						<Media onended=self.on_ended_cb.clone() class="max-h-screen max-w-screen" file=file.clone() settings=self.settings />
 						<div class=format!("{} {}", nav_buttons_class, "right-0") onclick=self.link.callback(|_| Msg::NextFile)>
 							{ Icon::new_sized(IconKind::ArrowRight, 128) }
 						</div>

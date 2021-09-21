@@ -4,6 +4,7 @@ use yew_octicons::{Icon, IconKind};
 use crate::app::{self, Settings};
 
 pub enum Msg {
+	Close,
 	ToggleVisible,
 }
 
@@ -83,6 +84,10 @@ impl Component for Menu {
 
 	fn update(&mut self, msg: Self::Message) -> ShouldRender {
 		match msg {
+			Msg::Close => {
+				self.visible = false;
+				true
+			}
 			Msg::ToggleVisible => {
 				self.visible = !self.visible;
 				true
@@ -91,65 +96,98 @@ impl Component for Menu {
 	}
 
 	fn view(&self) -> Html {
-		let panel_class = "bg-gray-800 text-white absolute inset-y-0 w-4/5 lg:w-1/5 flex flex-col place-content-center place-items-center select-none transition left-0";
-		let form_class = "my-16 overflow-y-auto";
+		let panel_class = "bg-gray-800 text-white absolute inset-y-0 w-4/5 md:w-3/5 lg:w-2/6 flex flex-col place-content-center place-items-center select-none transition left-0 divide-y";
+		let form_class =
+			"px-8 w-full h-full overflow-y-auto flex flex-col divide-y place-content-center";
+		let fieldset_class = "flex flex-col border-t";
+		let field_class =
+			"flex bg-white bg-opacity-0 hover:bg-opacity-30 transition text-6xl lg:text-4xl p-4";
+		let input_checkbox = "flex-1 self-center scale-500 lg:scale-400 mr-4";
+		let input_number =
+			"bg-white bg-opacity-0 text-right outline-none flex-1 disabled:opacity-50 w-1/3";
 		html! {
 			<div class=&self.class>
+				{if self.visible {
+					html! {<div class="absolute bg-opacity-0 inset-0" onclick=self.link.callback(|_| Msg::Close)></div>}
+				} else {
+					html!()
+				}}
 				<div class=format!("{} {}", panel_class, if self.visible { "translate-x-0" } else { "-translate-x-full" })>
 					<form class=form_class>
-						<fieldset>
+						<fieldset class=fieldset_class>
 							<legend>{ "Video" }</legend>
-							<label>{ "Autoplay" }</label>
-							<input type="checkbox"
-								checked=self.settings.toggle_video_autoplay
-								disabled=!self.settings.toggle_video
-								onchange=&self.toggle_video_autoplay_callback
-							/>
-							<label>{ "Delay" }</label>
-							<input type="number" class="bg-black"
-								disabled={ !self.settings.toggle_video || !self.settings.toggle_video_autoplay }
-								min=0
-								max=format!("{}", app::MAX_DELAY_SECONDS.as_secs())
-								pattern="^\\d{1,4}$"
-								value=format!("{}", self.settings.config_video_autoplay_delay.as_secs())
-								onchange=&self.config_video_autoplay_delay_callback
-							/>
+							<div class=field_class>
+								<label class="flex-2">{ "Autoplay" }</label>
+								<input type="checkbox" class=input_checkbox
+									checked=self.settings.toggle_video_autoplay
+									disabled=!self.settings.toggle_video
+									onchange=&self.toggle_video_autoplay_callback
+								/>
+							</div>
+							<div class=field_class>
+								<label class="flex-2"
+									disabled={ !self.settings.toggle_video || !self.settings.toggle_video_autoplay }>
+									{ "Delay" }
+								</label>
+								<input type="number" class=input_number
+									disabled={ !self.settings.toggle_video || !self.settings.toggle_video_autoplay }
+									min=0
+									max=format!("{}", app::MAX_DELAY_SECONDS.as_secs())
+									pattern="^\\d{1,4}$"
+									value=format!("{}", self.settings.config_video_autoplay_delay.as_secs())
+									onchange=&self.config_video_autoplay_delay_callback
+								/>
+							</div>
 						</fieldset>
-						<fieldset>
+						<fieldset class=fieldset_class>
 							<legend>{ "Audio" }</legend>
-							<label>{ "Autoplay" }</label>
-							<input type="checkbox"
-								checked=self.settings.toggle_audio_autoplay
-								disabled=!self.settings.toggle_audio
-								onchange=&self.toggle_audio_autoplay_callback
-							/>
-							<label>{ "Delay" }</label>
-							<input type="number" class="bg-black"
-								disabled={ !self.settings.toggle_audio || !self.settings.toggle_audio_autoplay }
-								min=0
-								max=format!("{}", app::MAX_DELAY_SECONDS.as_secs())
-								pattern="^\\d{1,4}$"
-								value=format!("{}", self.settings.config_audio_autoplay_delay.as_secs())
-								onchange=&self.config_audio_autoplay_delay_callback
-							/>
+							<div class=field_class>
+								<label class="flex-2">{ "Autoplay" }</label>
+								<input type="checkbox" class=input_checkbox
+									checked=self.settings.toggle_audio_autoplay
+									disabled=!self.settings.toggle_audio
+									onchange=&self.toggle_audio_autoplay_callback
+								/>
+							</div>
+							<div class=field_class>
+								<label class="flex-2"
+									disabled={ !self.settings.toggle_audio || !self.settings.toggle_audio_autoplay }>
+									{ "Delay" }
+								</label>
+								<input type="number" class=input_number
+									disabled={ !self.settings.toggle_audio || !self.settings.toggle_audio_autoplay }
+									min=0
+									max=format!("{}", app::MAX_DELAY_SECONDS.as_secs())
+									pattern="^\\d{1,4}$"
+									value=format!("{}", self.settings.config_audio_autoplay_delay.as_secs())
+									onchange=&self.config_audio_autoplay_delay_callback
+								/>
+							</div>
 						</fieldset>
-						<fieldset>
+						<fieldset class=fieldset_class>
 							<legend>{ "Photos" }</legend>
-							<label>{ "Autoplay" }</label>
-							<input type="checkbox"
-								checked=self.settings.toggle_image_autoplay
-								disabled=!self.settings.toggle_image
-								onchange=&self.toggle_image_autoplay_callback
-							/>
-							<label>{ "Delay" }</label>
-							<input type="number" class="bg-black"
-								disabled={ !self.settings.toggle_image || !self.settings.toggle_image_autoplay }
-								min=1
-								max=format!("{}", app::MAX_DELAY_SECONDS.as_secs())
-								pattern="^\\d{1,4}$"
-								value=format!("{}", self.settings.config_image_autoplay_delay.as_secs())
-								onchange=&self.config_image_autoplay_delay_callback
-							/>
+							<div class=field_class>
+								<label class="flex-2">{ "Autoplay" }</label>
+								<input type="checkbox" class=input_checkbox
+									checked=self.settings.toggle_image_autoplay
+									disabled=!self.settings.toggle_image
+									onchange=&self.toggle_image_autoplay_callback
+								/>
+							</div>
+							<div class=field_class>
+								<label class="flex-2"
+									disabled={ !self.settings.toggle_image || !self.settings.toggle_image_autoplay }>
+									{ "Delay" }
+								</label>
+								<input type="number" class=input_number
+									disabled={ !self.settings.toggle_image || !self.settings.toggle_image_autoplay }
+									min=1
+									max=format!("{}", app::MAX_DELAY_SECONDS.as_secs())
+									pattern="^\\d{1,4}$"
+									value=format!("{}", self.settings.config_image_autoplay_delay.as_secs())
+									onchange=&self.config_image_autoplay_delay_callback
+								/>
+							</div>
 						</fieldset>
 					</form>
 				</div>

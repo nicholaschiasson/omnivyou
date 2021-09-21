@@ -140,12 +140,28 @@ impl Component for Media {
 				match media_type {
 					Type::Audio(_) => {
 						if new_audio_setting {
-							self.timeout = None;
+							self.timeout =
+								if props.settings.toggle_audio_autoplay && matches!(self.timeout, Some(_)) {
+									Some(TimeoutService::spawn(
+										props.settings.config_audio_autoplay_delay,
+										self.on_ended.clone(),
+									))
+								} else {
+									None
+								};
 						}
 					}
 					Type::Video(_) => {
 						if new_video_setting {
-							self.timeout = None;
+							self.timeout =
+								if props.settings.toggle_video_autoplay && matches!(self.timeout, Some(_)) {
+									Some(TimeoutService::spawn(
+										props.settings.config_video_autoplay_delay,
+										self.on_ended.clone(),
+									))
+								} else {
+									None
+								};
 						}
 					}
 					_ => (),
@@ -157,7 +173,7 @@ impl Component for Media {
 			if props.settings.toggle_image_autoplay {
 				if new_media || new_callback || new_image_setting {
 					self.timeout = Some(TimeoutService::spawn(
-						self.settings.config_image_autoplay_delay,
+						props.settings.config_image_autoplay_delay,
 						self.on_ended.clone(),
 					));
 				}
