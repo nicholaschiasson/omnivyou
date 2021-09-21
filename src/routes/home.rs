@@ -15,10 +15,12 @@ use crate::{
 	components::{
 		media::{Media, Type},
 		menu::Menu,
+		warning::Warning,
 	},
 };
 
 pub enum Msg {
+	DropWarning,
 	IndexDirectory(Vec<File>),
 	NextFile,
 	PreviousFile,
@@ -43,6 +45,7 @@ pub struct Home {
 	node_ref: NodeRef,
 	on_ended_cb: Callback<()>,
 	settings: Settings,
+	warning_message: Option<String>,
 }
 
 impl Component for Home {
@@ -59,6 +62,7 @@ impl Component for Home {
 			node_ref: NodeRef::default(),
 			on_ended_cb,
 			settings: Settings::new(),
+			warning_message: None,
 		}
 	}
 
@@ -68,6 +72,10 @@ impl Component for Home {
 
 	fn update(&mut self, msg: Self::Message) -> ShouldRender {
 		match msg {
+			Msg::DropWarning => {
+				self.warning_message = None;
+				true
+			}
 			Msg::IndexDirectory(files) => {
 				if files.len() > 0 {
 					self.files = Some(files);
@@ -87,7 +95,8 @@ impl Component for Home {
 					}
 					return true;
 				}
-				warn!("No files could be found");
+				self.warning_message = Some(String::from("No files could be found"));
+				warn!("{}", &self.warning_message.as_ref().unwrap());
 				true
 			}
 			Msg::NextFile => {
@@ -152,6 +161,7 @@ impl Component for Home {
 
 	fn view(&self) -> Html {
 		let circle_buttons_class = "text-center text-white bg-gray-500 text-opacity-25 bg-opacity-25 hover:text-opacity-80 hover:bg-opacity-90 transition duration-500 absolute top-0 rounded-full text-4xl mx-6 my-4 p-2 h-32 w-32 lg:h-16 lg:w-16 flex place-content-center place-items-center cursor-pointer select-none rotate-0 hover:rotate-180";
+		let warning_class = "absolute inset-x-32 md:inset-x-48 lg:inset-x-64 top-0 mt-4";
 		let config_audio_autoplay_delay_callback = self.link.callback(|value| {
 			if let ChangeData::Value(delay) = value {
 				if let Ok(d) = delay.parse::<u64>() {
@@ -205,6 +215,11 @@ impl Component for Home {
 							config_image_autoplay_delay_callback=config_image_autoplay_delay_callback
 							config_video_autoplay_delay_callback=config_video_autoplay_delay_callback
 						/>
+						{if let Some(warning) = &self.warning_message {
+							html! {<Warning class=warning_class message=warning.clone() ondead=self.link.callback(|_| Msg::DropWarning) />}
+						} else {
+							html!()
+						}}
 					</div>
 				}
 			}
@@ -273,6 +288,11 @@ impl Component for Home {
 							config_image_autoplay_delay_callback=config_image_autoplay_delay_callback
 							config_video_autoplay_delay_callback=config_video_autoplay_delay_callback
 						/>
+						{if let Some(warning) = &self.warning_message {
+							html! {<Warning class=warning_class message=warning.clone() ondead=self.link.callback(|_| Msg::DropWarning) />}
+						} else {
+							html!()
+						}}
 					</div>
 				}
 			}

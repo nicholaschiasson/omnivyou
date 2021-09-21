@@ -1,3 +1,7 @@
+/**
+ * This was the first version of the home component using the experimental FileSystemAccess API proposal in order to index directories.
+ */
+
 use std::{
 	error::Error,
 	fmt::{self, Debug, Display, Formatter}

@@ -143,28 +143,26 @@ impl Component for Media {
 				match media_type {
 					Type::Audio(_) => {
 						if new_audio_setting {
-							self.timeout =
-								if props.settings.toggle_audio_autoplay && self.ended {
-									Some(TimeoutService::spawn(
-										props.settings.config_audio_autoplay_delay,
-										self.on_ended.clone(),
-									))
-								} else {
-									None
-								};
+							self.timeout = if props.settings.toggle_audio_autoplay && self.ended {
+								Some(TimeoutService::spawn(
+									props.settings.config_audio_autoplay_delay,
+									self.on_ended.clone(),
+								))
+							} else {
+								None
+							};
 						}
 					}
 					Type::Video(_) => {
 						if new_video_setting {
-							self.timeout =
-								if props.settings.toggle_video_autoplay && self.ended {
-									Some(TimeoutService::spawn(
-										props.settings.config_video_autoplay_delay,
-										self.on_ended.clone(),
-									))
-								} else {
-									None
-								};
+							self.timeout = if props.settings.toggle_video_autoplay && self.ended {
+								Some(TimeoutService::spawn(
+									props.settings.config_video_autoplay_delay,
+									self.on_ended.clone(),
+								))
+							} else {
+								None
+							};
 						}
 					}
 					_ => (),

@@ -102,9 +102,8 @@ impl Component for Menu {
 		let fieldset_class = "flex flex-col border-t";
 		let field_class =
 			"flex bg-white bg-opacity-0 hover:bg-opacity-30 transition text-6xl lg:text-4xl p-4";
-		let input_checkbox = "flex-1 self-center scale-500 lg:scale-400 mr-4";
-		let input_number =
-			"bg-white bg-opacity-0 text-right outline-none flex-1 disabled:opacity-50 w-1/3";
+		let input_checkbox = "self-center scale-500 lg:scale-400 mr-4";
+		let input_number = "bg-white bg-opacity-0 text-right outline-none disabled:opacity-50 w-1/3";
 		html! {
 			<div class=&self.class>
 				{if self.visible {
@@ -117,7 +116,7 @@ impl Component for Menu {
 						<fieldset class=fieldset_class>
 							<legend>{ "Video" }</legend>
 							<div class=field_class>
-								<label class="flex-2">{ "Autoplay" }</label>
+								<label class="flex-1">{ "Autoplay" }</label>
 								<input type="checkbox" class=input_checkbox
 									checked=self.settings.toggle_video_autoplay
 									disabled=!self.settings.toggle_video
@@ -125,7 +124,7 @@ impl Component for Menu {
 								/>
 							</div>
 							<div class=field_class>
-								<label class="flex-2"
+								<label class="flex-1"
 									disabled={ !self.settings.toggle_video || !self.settings.toggle_video_autoplay }>
 									{ "Delay" }
 								</label>
@@ -142,7 +141,7 @@ impl Component for Menu {
 						<fieldset class=fieldset_class>
 							<legend>{ "Audio" }</legend>
 							<div class=field_class>
-								<label class="flex-2">{ "Autoplay" }</label>
+								<label class="flex-1">{ "Autoplay" }</label>
 								<input type="checkbox" class=input_checkbox
 									checked=self.settings.toggle_audio_autoplay
 									disabled=!self.settings.toggle_audio
@@ -150,7 +149,7 @@ impl Component for Menu {
 								/>
 							</div>
 							<div class=field_class>
-								<label class="flex-2"
+								<label class="flex-1"
 									disabled={ !self.settings.toggle_audio || !self.settings.toggle_audio_autoplay }>
 									{ "Delay" }
 								</label>
@@ -167,7 +166,7 @@ impl Component for Menu {
 						<fieldset class=fieldset_class>
 							<legend>{ "Photos" }</legend>
 							<div class=field_class>
-								<label class="flex-2">{ "Autoplay" }</label>
+								<label class="flex-1">{ "Autoplay" }</label>
 								<input type="checkbox" class=input_checkbox
 									checked=self.settings.toggle_image_autoplay
 									disabled=!self.settings.toggle_image
@@ -175,7 +174,7 @@ impl Component for Menu {
 								/>
 							</div>
 							<div class=field_class>
-								<label class="flex-2"
+								<label class="flex-1"
 									disabled={ !self.settings.toggle_image || !self.settings.toggle_image_autoplay }>
 									{ "Delay" }
 								</label>

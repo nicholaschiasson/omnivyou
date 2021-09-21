@@ -5,12 +5,14 @@ module.exports = {
 	],
 	darkMode: false, // or 'media' or 'class'
 	theme: {
-		flex: {
-			'2': '2 2 0%',
-		},
-		scale: {
-			'400': '4',
-			'500': '5',
+		extend: {
+			scale: {
+				'400': '4',
+				'500': '5',
+			},
+			transitionDuration: {
+				'2000': '2000ms',
+			}
 		}
 	},
 	variants: {
