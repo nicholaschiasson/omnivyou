@@ -24,6 +24,7 @@ jobs:
           name: pre
           path: pre
   check:
+    runs-on: ubuntu-latest
     container:
       image: rust:1.55-alpine
     name: Check
@@ -38,6 +39,7 @@ jobs:
           name: target
           path: target
   test:
+    runs-on: ubuntu-latest
     container:
       image: rust:1.55-alpine
     name: Test
@@ -53,6 +55,7 @@ jobs:
       - name: Test
         run: cargo test --release
   build:
+    runs-on: ubuntu-latest
     container:
       image: rust:1.55-alpine
     name: Build
