@@ -26,7 +26,7 @@ jobs:
   check:
     runs-on: ubuntu-latest
     container:
-      image: rust:1.54
+      image: rust:1.54-alpine
     name: Check
     steps:
       - name: Checkout
@@ -41,7 +41,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     container:
-      image: rust:1.54
+      image: rust:1.54-alpine
     name: Test
     needs: [check]
     steps:
@@ -57,7 +57,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: rust:1.54
+      image: rust:1.54-alpine
     name: Build
     needs: [check, preprocess]
     steps:
@@ -74,7 +74,7 @@ jobs:
           name: target
           path: target
       - name: Build
-        run: rustup target add wasm32-unknown-unknown && wget -qO- https://github.com/thedodd/trunk/releases/download/v0.14.0/trunk-x86_64-unknown-linux-gnu.tar.gz | tar -xzf- && ls -la && ./trunk build --release
+        run: rustup target add wasm32-unknown-unknown && cargo install --locked --version 0.14.0 trunk && trunk build --release
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
