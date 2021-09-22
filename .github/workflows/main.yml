@@ -26,7 +26,7 @@ jobs:
   check:
     runs-on: ubuntu-latest
     container:
-      image: rust:1.55-alpine
+      image: rust:1.54
     name: Check
     steps:
       - name: Checkout
@@ -41,7 +41,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     container:
-      image: rust:1.55-alpine
+      image: rust:1.54
     name: Test
     needs: [check]
     steps:
@@ -57,7 +57,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: rust:1.55-alpine
+      image: rust:1.54
     name: Build
     needs: [check, preprocess]
     steps:
