@@ -1,7 +1,5 @@
 FROM node:14-alpine
 
-WORKDIR ${GITHUB_WORKSPACE}
-
 RUN mkdir -p pre/rsrc/styles
 
 RUN pwd

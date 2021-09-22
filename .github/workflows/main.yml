@@ -7,6 +7,10 @@ on:
 env:
   CARGO_TERM_COLOR: always
 
+defaults:
+  run:
+    working-directory: ${{ env.GITHUB_WORKSPACE }}
+
 jobs:
   preprocess:
     runs-on: ubuntu-latest
