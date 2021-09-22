@@ -1,6 +1,12 @@
 # omnivyou
 
-## ToDo
+Media viewer for video, audio, and images alike.
+
+Built with the [yew](https://github.com/yewstack/yew) framework and no backend.
+
+Select a directory on your local machine containing some media to view in the browser.
+
+## Roadmap
 
 ### V1
 
@@ -19,10 +25,9 @@
 		- [x] Video autoplay delay
 - [x] Make it so clicking outside of menu closes the menu
 - [x] Add visual warning when no files could be found
-- [ ] GitHub action to build pages folder
-- [ ] Buy omnivyou.com
-- [ ] Use custom domain in GitHub pages
-- [ ] GitHub action for letsencrypt
+- [x] GitHub action to build pages folder
+- [x] Buy omnivyou.com
+- [x] Use custom domain in GitHub pages
 
 ### V2
 
