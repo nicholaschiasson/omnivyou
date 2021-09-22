@@ -122,6 +122,7 @@ impl Component for Media {
 			self.file = props.file.clone();
 			self.media_type = media_type.clone();
 			self.src = Url::create_object_url_with_blob(&props.file.slice().ok().unwrap()).unwrap();
+			self.timeout = None;
 		}
 		let new_callback = self.on_ended != props.onended;
 		if new_callback {
