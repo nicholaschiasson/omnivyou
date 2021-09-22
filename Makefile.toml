@@ -18,8 +18,7 @@ args = ["-c", "npx tailwindcss -i rsrc/styles/tailwind.css -o pre/rsrc/styles/ta
 [tasks.serve]
 dependencies = ["build"]
 command = "trunk"
-# args = ["serve", "--no-autoreload"]
-args = ["serve"] # TODO: After upgrading trunk-cli to 0.14, use the above args with --no-autoreload
+args = ["serve", "--no-autoreload"]
 
 [tasks.watch]
 dependencies = ["build"]

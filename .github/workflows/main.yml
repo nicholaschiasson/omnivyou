@@ -1,0 +1,112 @@
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  preprocess:
+    runs-on: ubuntu-latest
+    name: Preprocess
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Preprocess
+        uses: ./.github/actions/preprocess
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: pre
+          path: pre
+  check:
+    runs-on: ubuntu-latest
+    name: Check
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Check
+        uses: ./.github/actions/cargo
+        with:
+          command: check
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: target
+          path: target
+  test:
+    runs-on: ubuntu-latest
+    name: Test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: target
+          path: target
+      - name: Test
+        uses: ./.github/actions/cargo
+        with:
+          command: test
+  build:
+    runs-on: ubuntu-latest
+    name: Build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: pre
+          path: pre
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: target
+          path: target
+      - name: Build
+        uses: ./.github/actions/trunk
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: dist
+          path: dist
+  tag:
+    runs-on: ubuntu-latest
+    name: Tag
+    needs: [build, check, preprocess, test]
+    if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' && (success() || failure()) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Check semver bump
+        id: check-semver
+        run: |
+          if [[ "${{ github.event.head_commit.message }}" =~ ^Merge\ pull\ request\ #[0-9]+\ from\ [^/]+/patch/.+$ ]]; then
+            echo ::set-output name=semver::patch
+          elif [[ "${{ github.event.head_commit.message }}" =~ ^Merge\ pull\ request\ #[0-9]+\ from\ [^/]+/major/.+$ ]]; then
+            echo ::set-output name=semver::major
+          else
+            echo ::set-output name=semver::minor
+          fi
+      - name: Bump major version and push tag
+        if: ${{ steps.check-semver.outputs.semver == 'major' }}
+        uses: anothrNick/github-tag-action@1.17.2
+        env:
+          DEFAULT_BUMP: major
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Bump minor version and push tag
+        if: ${{ steps.check-semver.outputs.semver == 'minor' }}
+        uses: anothrNick/github-tag-action@1.17.2
+        env:
+          DEFAULT_BUMP: minor
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Bump patch version and push tag
+        if: ${{ steps.check-semver.outputs.semver == 'patch' }}
+        uses: anothrNick/github-tag-action@1.17.2
+        env:
+          DEFAULT_BUMP: patch
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

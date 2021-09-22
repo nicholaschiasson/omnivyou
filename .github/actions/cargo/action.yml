@@ -1,0 +1,10 @@
+name: Cargo
+inputs:
+  command:
+    description: Cargo command to execute
+    required: true
+runs:
+  using: docker
+  image: Dockerfile
+  args:
+    - ${{ inputs.command }}

@@ -1,0 +1,4 @@
+FROM node:14-alpine
+
+RUN mkdir -p pre/rsrc/styles
+RUN npx tailwindcss -i rsrc/styles/tailwind.css -o pre/rsrc/styles/tailwind.css
