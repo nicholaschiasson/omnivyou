@@ -17,7 +17,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Preprocess
-        run: mkdir -p pre/rsrc/styles && npx tailwindcss -i rsrc/styles/tailwind.css -o pre/rsrc/styles/tailwind.css
+        run: npx tailwindcss -i rsrc/styles/tailwind.css -o pre/rsrc/styles/tailwind.css
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
