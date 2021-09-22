@@ -192,10 +192,10 @@ impl Component for Home {
 				let nav_buttons_class = "text-white bg-gray-700 text-opacity-0 bg-opacity-0 hover:text-opacity-100 hover:bg-opacity-70 transition duration-500 absolute inset-y-0 w-1/6 lg:w-1/12 text-9xl flex place-content-center place-items-center cursor-pointer select-none";
 				html! {
 					<div class="bg-black text-white absolute inset-0 flex place-content-center place-items-center">
+						<Media onended=self.on_ended_cb.clone() class="max-h-screen max-w-screen" file=file.clone() settings=self.settings />
 						<div class=format!("{} {}", nav_buttons_class, "left-0") onclick=self.link.callback(|_| Msg::PreviousFile)>
 							{ Icon::new_sized(IconKind::ArrowLeft, 128) }
 						</div>
-						<Media onended=self.on_ended_cb.clone() class="max-h-screen max-w-screen" file=file.clone() settings=self.settings />
 						<div class=format!("{} {}", nav_buttons_class, "right-0") onclick=self.link.callback(|_| Msg::NextFile)>
 							{ Icon::new_sized(IconKind::ArrowRight, 128) }
 						</div>
