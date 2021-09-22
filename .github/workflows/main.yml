@@ -23,21 +23,6 @@ jobs:
         with:
           name: pre
           path: pre
-  check:
-    runs-on: ubuntu-latest
-    container:
-      image: rust:1.55
-    name: Check
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Check
-        run: cargo check
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: target
-          path: target
   test:
     runs-on: ubuntu-latest
     container:
@@ -74,6 +59,16 @@ jobs:
         with:
           name: dist
           path: dist
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy
+    needs: [build, check, test]
+    steps:
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@4.1.5
+        with:
+          branch: gh-pages
+          folder: dist
   tag:
     runs-on: ubuntu-latest
     name: Tag
