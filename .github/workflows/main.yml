@@ -9,6 +9,7 @@ env:
 
 jobs:
   preprocess:
+    runs-on: ubuntu-latest
     container:
       image: node:14-alpine
     name: Preprocess
