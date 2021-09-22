@@ -69,6 +69,11 @@ jobs:
     name: Deploy
     needs: [build, check, test]
     steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: dist
+          path: dist
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@4.1.5
         with:
