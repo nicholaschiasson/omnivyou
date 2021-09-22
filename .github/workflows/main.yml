@@ -74,6 +74,8 @@ jobs:
         with:
           name: dist
           path: dist
+      - name: CNAME
+        run: echo omnivyou.com > dist/CNAME
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@4.1.5
         with:
