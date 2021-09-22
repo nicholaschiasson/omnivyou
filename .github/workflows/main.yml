@@ -74,7 +74,7 @@ jobs:
           name: target
           path: target
       - name: Build
-        run: rustup target add wasm32-unknown-unknown && cargo install --locked --version 0.14 trunk && trunk build --release
+        run: rustup target add wasm32-unknown-unknown && cargo install --locked --version 0.14.0 trunk && trunk build --release
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
