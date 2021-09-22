@@ -33,6 +33,7 @@ Select a directory on your local machine containing some media to view in the br
 
 - [x] Build tailwind with build step
 - [ ] Build tailwind with trunk hook
+- [ ] Add contact page or perhaps page footer with link back to repo and twitter or something
 - [ ] Style the initial file picker page further
 - [ ] Add swipe capability for mobile
 - [ ] Add transitions?
