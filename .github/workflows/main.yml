@@ -39,6 +39,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     name: Test
+    needs: [check]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -54,6 +55,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     name: Build
+    needs: [check, preprocess]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
