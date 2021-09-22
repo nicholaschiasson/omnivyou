@@ -9,7 +9,7 @@ env:
 
 defaults:
   run:
-    working-directory: ${{ env.GITHUB_WORKSPACE }}
+    working-directory: ${{GITHUB_WORKSPACE}}
 
 jobs:
   preprocess:
