@@ -1,4 +1,0 @@
-name: Preprocess
-runs:
-  using: docker
-  image: Dockerfile

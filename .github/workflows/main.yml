@@ -26,13 +26,13 @@ jobs:
   check:
     runs-on: ubuntu-latest
     container:
-      image: rust:1.54-alpine
+      image: rust:1.54
     name: Check
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Check
-        run: cargo check --release
+        run: rustup target add wasm32-unknown-unknown && cargo check --release
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -41,13 +41,13 @@ jobs:
   test:
     runs-on: ubuntu-latest
     container:
-      image: rust:1.54-alpine
+      image: rust:1.54
     name: Test
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Test
-        run: cargo test --release
+        run: rustup target add wasm32-unknown-unknown && cargo test --release
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -56,7 +56,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: rust:1.54-alpine
+      image: rust:1.54
     name: Build
     needs: [check, preprocess]
     steps:
@@ -73,7 +73,7 @@ jobs:
           name: target
           path: target
       - name: Build
-        run: cargo install --locked --version 0.14 trunk && trunk build --release
+        run: rustup target add wasm32-unknown-unknown && cargo install --locked --version 0.14 trunk && trunk build --release
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:

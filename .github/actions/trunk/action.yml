@@ -1,4 +1,0 @@
-name: Trunk
-runs:
-  using: docker
-  image: Dockerfile
