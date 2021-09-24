@@ -4,7 +4,7 @@ mod app;
 mod components;
 mod routes;
 
-use wasm_bindgen::prelude::*;
+use wasm_bindgen::JsValue;
 
 use app::App;
 
